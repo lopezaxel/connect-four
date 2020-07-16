@@ -69,5 +69,18 @@ describe "Gameboard" do
       expect(gameboard.write_move(4, "o")).to eql(nil)
     end
   end
+
+  describe "#display_board" do
+    gameboard = Gameboard.new
+
+    it "should return the board as a string" do
+      expectation = ""
+      gameboard.board.each do |r| 
+        expectation += "|" + r.join("|") + "|\n"
+      end
+
+      expect(gameboard.display_board).to eql(expectation)
+    end
+  end
 end
 

@@ -1,3 +1,5 @@
+require 'pry'
+
 class Gameboard
   attr_accessor :board
 
@@ -6,12 +8,12 @@ class Gameboard
   end
 
   def create_board
-    Array.new(6) { Array.new(7, "") }
+    Array.new(6) { Array.new(7, " ") }
   end
 
   def find_available_row(column)
     board.each_index do |row|
-      return row if board[row][column] == ""
+      return row if board[row][column] == " "
     end
 
     nil
@@ -23,7 +25,16 @@ class Gameboard
 
     board[row][column] = mark
   end
+
+  def display_board
+    graphic = ""
+    board.reverse.each do |row|
+      graphic += "|#{row.join("|")}|\n"
+    end
+
+    graphic
+  end
 end
 
-#gameboard = Gameboard.new
+gameboard = Gameboard.new
 
