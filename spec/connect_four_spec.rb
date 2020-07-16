@@ -84,3 +84,22 @@ describe "Gameboard" do
   end
 end
 
+describe "Player" do
+  player = Player.new  
+
+  describe "#prompt_column" do
+    it "return a string" do
+      expect(player.prompt_column.class).to eql(String)
+    end
+  end
+
+  describe "#input" do
+    it "return a string" do
+      allow($stdin).to receive(:gets).and_return("yes")
+      col = $stdin.gets
+
+      expect(col).to eq("yes")
+    end
+  end
+end
+

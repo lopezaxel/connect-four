@@ -36,5 +36,16 @@ class Gameboard
   end
 end
 
+class Player
+ def prompt_column
+   "Enter a column: "
+ end
+
+ def input
+   gets.chomp
+ end
+end
+
 gameboard = Gameboard.new
+player = Player.new
 
