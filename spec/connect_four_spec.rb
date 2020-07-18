@@ -83,34 +83,105 @@ describe "Gameboard" do
     end
   end
 
+  describe "#check_horizontal" do
+    gameboard = Gameboard.new
+
+    it "return true if 4 straight in bottom row" do
+      2.upto(5) { |n| gameboard.write_move(n, "o") }
+      expect(gameboard.check_horizontal(0, 4)).to eql(true)
+    end
+
+    it "return true if 4 straight in middle row" do
+      3.upto(6) { |n| gameboard.board[3][n] = "o" }
+      expect(gameboard.check_horizontal(3, 3)).to eql(true)
+      expect(gameboard.check_horizontal(3, 4)).to eql(true)
+      expect(gameboard.check_horizontal(3, 5)).to eql(true)
+      expect(gameboard.check_horizontal(3, 6)).to eql(true)
+    end
+  end
+
+  describe "#check_vertical" do
+    gameboard = Gameboard.new 
+
+    it "return true if straight vertical at bottom" do
+      4.times { |n| gameboard.write_move(0, "o") } 
+      expect(gameboard.check_vertical(3, 0)).to eql(true)
+    end
+  end
+
+  describe "#get_right_diagonal" do
+    it "return correct diagonal array 0, 4" do
+      gameboard = Gameboard.new
+
+      gameboard.board[0][4] = "o"
+      gameboard.board[1][3] = "o"
+      gameboard.board[2][2] = "o"
+      gameboard.board[3][1] = "o"
+
+      expect(gameboard.get_right_diagonal(0, 4)).to eql([[0,4],[1,3],[2,2],[3,1]])
+      expect(gameboard.get_right_diagonal(1, 3)).to eql([[1,3],[2,2],[3,1],[4,0]])
+      expect(gameboard.get_right_diagonal(2, 2)).to eql([[2,2],[3,1],[4,0]])
+      expect(gameboard.get_right_diagonal(3, 1)).to eql([[3,1],[4,0]])
+    end
+
+    it "return correct diagonal 2, 4" do
+      gameboard = Gameboard.new
+
+      gameboard.board[2][4] = "o"
+      gameboard.board[3][3] = "o"
+      gameboard.board[4][2] = "o"
+      gameboard.board[5][1] = "o"
+
+      expect(gameboard.get_right_diagonal(2, 4)).to eql([[2,4],[3,3],[4,2],[5,1]])
+      expect(gameboard.get_right_diagonal(3, 3)).to eql([[3,3],[4,2],[5,1]])
+      expect(gameboard.get_right_diagonal(4, 2)).to eql([[4,2],[5,1]])
+      expect(gameboard.get_right_diagonal(5, 1)).to eql([[5,1]])
+    end
+  end
+
+  describe "#check_right_diagonal" do
+    it "returns true with diagonal 2, 4 to 5, 1" do
+      gameboard = Gameboard.new
+
+      gameboard.board[2][4] = "o"
+      gameboard.board[3][3] = "o"
+      gameboard.board[4][2] = "o"
+      gameboard.board[5][1] = "o"
+
+      expect(gameboard.check_right_diagonal(2, 4)).to eql(true)
+      expect(gameboard.check_right_diagonal(3, 3)).to eql(true)
+      expect(gameboard.check_right_diagonal(4, 2)).to eql(true)
+      expect(gameboard.check_right_diagonal(5, 1)).to eql(true)
+    end
+  end
+  
+  describe "#check_diagonal" do
+    it "return true in a left diagonal" do
+      gameboard = Gameboard.new
+      2.upto(5) { |n| gameboard.board[n][n] = "o" }
+      expect(gameboard.check_diagonal(2, 2)).to eql(true)
+      expect(gameboard.check_diagonal(3, 3)).to eql(true)
+      expect(gameboard.check_diagonal(4, 4)).to eql(true)
+      expect(gameboard.check_diagonal(5, 5)).to eql(true)
+    end
+  end
+
   describe "#check_win" do
     it "return true if 4 in a row" do
       gameboard = Gameboard.new
-      gameboard.write_move(1, "o")
-      gameboard.write_move(2, "o")
-      gameboard.write_move(3, "o")
-      gameboard.write_move(4, "o")
-
+      1.upto(4) { |n| gameboard.write_move(n, "o") }
       expect(gameboard.check_win(0, 4)).to eql(true)
     end
 
     it "return true if 4 in a column" do
       gameboard = Gameboard.new
-      gameboard.write_move(1, "o")
-      gameboard.write_move(1, "o")
-      gameboard.write_move(1, "o")
-      gameboard.write_move(1, "o")
-
+      4.times { gameboard.write_move(1, "o") }
       expect(gameboard.check_win(3, 1)).to eql(true)
     end
 
     it "return true if 4 in a diagonal" do
       gameboard = Gameboard.new
-      gameboard.board[0][0] = "o"
-      gameboard.board[1][1] = "o"
-      gameboard.board[2][2] = "o"
-      gameboard.board[3][3] = "o"
-
+      4.times { |n| gameboard.board[n][n] = "o" }
       expect(gameboard.check_win(3, 3)).to eql(true)
     end
   end

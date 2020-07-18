@@ -49,7 +49,7 @@ class Gameboard
     3.downto(0) do |left|
       next if (col - left < 0) || (col + right > board.size) 
 
-      squares = board[row][col - left, col + right]   
+      squares = board[row][col - left..col + right]   
       right += 1
 
       return true if straight_match(squares, mark) && squares.size >= 3
@@ -71,7 +71,7 @@ class Gameboard
     return straight_match(column, mark)
   end
 
-  def get_diagonal(row, col, direction)
+  def get_diagonal(row, col)
     diagonal = []
 
     row.upto(row + 3) do |r|
@@ -79,11 +79,19 @@ class Gameboard
         diagonal << [r, col] 
       end
 
-      if direction == "left"
-        col += 1 
-      elsif direction == "right"
-        col -= 1
-      end
+      col += 1 
+    end
+
+    diagonal
+  end
+
+  def get_right_diagonal(row, col)
+    diagonal = []
+
+    row.upto(row + 3) do |r| 
+      break if r < 0 || r >= board.length || col < 0 || col >= board.length
+      diagonal << [r, col] 
+      col -= 1
     end
 
     diagonal
@@ -96,13 +104,10 @@ class Gameboard
     return false if mark.nil?
 
     (row - 3).upto(row + 3) do |r|
-      left_diagonal = get_diagonal(r, c, "left")
-      right_diagonal = get_diagonal(r, c, "right")
+      left_diagonal = get_diagonal(r, c)
 
       if left_diagonal.size == 4
         return true if diagonal_match(left_diagonal, mark)
-      elsif right_diagonal.size == 4
-        return true if diagonal_match(right_diagonal, mark)
       end
 
       c += 1
