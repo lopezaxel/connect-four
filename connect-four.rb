@@ -35,6 +35,11 @@ class Gameboard
     graphic
   end
 
+  def check_win(row, column)
+    check_horizontal(row, column) || check_vertical(row, column) ||
+    check_diagonal(row, column)
+  end
+  
   def check_horizontal(row, col)
     right = 0
     mark = board[row][col]
