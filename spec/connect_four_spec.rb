@@ -82,10 +82,42 @@ describe "Gameboard" do
       expect(gameboard.display_board).to eql(expectation)
     end
   end
+
+  describe "#check_win" do
+    it "return true if 4 in a row" do
+      gameboard = Gameboard.new
+      gameboard.write_move(1, "o")
+      gameboard.write_move(2, "o")
+      gameboard.write_move(3, "o")
+      gameboard.write_move(4, "o")
+
+      expect(gameboard.check_win(0, 4)).to eql(true)
+    end
+
+    it "return true if 4 in a column" do
+      gameboard = Gameboard.new
+      gameboard.write_move(1, "o")
+      gameboard.write_move(1, "o")
+      gameboard.write_move(1, "o")
+      gameboard.write_move(1, "o")
+
+      expect(gameboard.check_win(3, 1)).to eql(true)
+    end
+
+    it "return true if 4 in a diagonal" do
+      gameboard = Gameboard.new
+      gameboard.board[0][0] = "o"
+      gameboard.board[1][1] = "o"
+      gameboard.board[2][2] = "o"
+      gameboard.board[3][3] = "o"
+
+      expect(gameboard.check_win(3, 3)).to eql(true)
+    end
+  end
 end
 
 describe "Player" do
-  player = Player.new  
+  player = Player.new("o")
 
   describe "#prompt_column" do
     it "return a string" do
