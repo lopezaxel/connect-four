@@ -109,8 +109,8 @@ describe "Gameboard" do
     end
   end
 
-  describe "#get_right_diagonal" do
-    it "return correct diagonal array 0, 4" do
+  describe "#get_diagonal" do
+    it "return correct left diagonal array 0, 4" do
       gameboard = Gameboard.new
 
       gameboard.board[0][4] = "o"
@@ -118,28 +118,25 @@ describe "Gameboard" do
       gameboard.board[2][2] = "o"
       gameboard.board[3][1] = "o"
 
-      expect(gameboard.get_right_diagonal(0, 4)).to eql([[0,4],[1,3],[2,2],[3,1]])
-      expect(gameboard.get_right_diagonal(1, 3)).to eql([[1,3],[2,2],[3,1],[4,0]])
-      expect(gameboard.get_right_diagonal(2, 2)).to eql([[2,2],[3,1],[4,0]])
-      expect(gameboard.get_right_diagonal(3, 1)).to eql([[3,1],[4,0]])
+      expect(gameboard.get_diagonal(0, 4, "left")).to eql([[0,4],[1,3],[2,2],[3,1]])
+      expect(gameboard.get_diagonal(1, 3, "left")).to eql([[1,3],[2,2],[3,1],[4,0]])
+      expect(gameboard.get_diagonal(2, 2, "left")).to eql([[2,2],[3,1],[4,0]])
+      expect(gameboard.get_diagonal(3, 1, "left")).to eql([[3,1],[4,0]])
     end
 
-    it "return correct diagonal 2, 4" do
+    it "return correct right diagonal 2, 4" do
       gameboard = Gameboard.new
 
-      gameboard.board[2][4] = "o"
-      gameboard.board[3][3] = "o"
-      gameboard.board[4][2] = "o"
-      gameboard.board[5][1] = "o"
+      3.times { |n| gameboard.board[n][n] = "o" }
 
-      expect(gameboard.get_right_diagonal(2, 4)).to eql([[2,4],[3,3],[4,2],[5,1]])
-      expect(gameboard.get_right_diagonal(3, 3)).to eql([[3,3],[4,2],[5,1]])
-      expect(gameboard.get_right_diagonal(4, 2)).to eql([[4,2],[5,1]])
-      expect(gameboard.get_right_diagonal(5, 1)).to eql([[5,1]])
+      expect(gameboard.get_diagonal(0, 0, "right")).to eql([[0,0],[1,1],[2,2],[3,3]])
+      expect(gameboard.get_diagonal(1, 1, "right")).to eql([[1,1],[2,2],[3,3],[4,4]])
+      expect(gameboard.get_diagonal(2, 2, "right")).to eql([[2,2],[3,3],[4,4],[5,5]])
+      expect(gameboard.get_diagonal(3, 3, "right")).to eql([[3,3],[4,4],[5,5]])
     end
   end
 
-  describe "#check_right_diagonal" do
+  describe "#check_left_diagonal" do
     it "returns true with diagonal 2, 4 to 5, 1" do
       gameboard = Gameboard.new
 
@@ -148,41 +145,53 @@ describe "Gameboard" do
       gameboard.board[4][2] = "o"
       gameboard.board[5][1] = "o"
 
-      expect(gameboard.check_right_diagonal(2, 4)).to eql(true)
-      expect(gameboard.check_right_diagonal(3, 3)).to eql(true)
-      expect(gameboard.check_right_diagonal(4, 2)).to eql(true)
-      expect(gameboard.check_right_diagonal(5, 1)).to eql(true)
+      expect(gameboard.check_left_diagonal(2, 4)).to eql(true)
+      expect(gameboard.check_left_diagonal(3, 3)).to eql(true)
+      expect(gameboard.check_left_diagonal(4, 2)).to eql(true)
+      expect(gameboard.check_left_diagonal(5, 1)).to eql(true)
     end
   end
   
-  describe "#check_diagonal" do
-    it "return true in a left diagonal" do
+  describe "#check_right_diagonal" do
+    it "return true in a right diagonal" do
       gameboard = Gameboard.new
       2.upto(5) { |n| gameboard.board[n][n] = "o" }
-      expect(gameboard.check_diagonal(2, 2)).to eql(true)
-      expect(gameboard.check_diagonal(3, 3)).to eql(true)
-      expect(gameboard.check_diagonal(4, 4)).to eql(true)
-      expect(gameboard.check_diagonal(5, 5)).to eql(true)
+      expect(gameboard.check_right_diagonal(2, 2)).to eql(true)
+      expect(gameboard.check_right_diagonal(3, 3)).to eql(true)
+      expect(gameboard.check_right_diagonal(4, 4)).to eql(true)
+      expect(gameboard.check_right_diagonal(5, 5)).to eql(true)
     end
   end
 
-  describe "#check_win" do
+  describe "#check_win?" do
     it "return true if 4 in a row" do
       gameboard = Gameboard.new
       1.upto(4) { |n| gameboard.write_move(n, "o") }
-      expect(gameboard.check_win(0, 4)).to eql(true)
+      expect(gameboard.check_win?(0, 4)).to eql(true)
     end
 
     it "return true if 4 in a column" do
       gameboard = Gameboard.new
       4.times { gameboard.write_move(1, "o") }
-      expect(gameboard.check_win(3, 1)).to eql(true)
+      expect(gameboard.check_win?(3, 1)).to eql(true)
     end
 
     it "return true if 4 in a diagonal" do
       gameboard = Gameboard.new
       4.times { |n| gameboard.board[n][n] = "o" }
-      expect(gameboard.check_win(3, 3)).to eql(true)
+      expect(gameboard.check_win?(3, 3)).to eql(true)
+    end
+  end
+
+  describe "diagonal_match?" do
+    it "returns true if diagonal matches to desired mark" do
+      gameboard = Gameboard.new
+      diagonal = []
+      3.times do |n| 
+        gameboard.board[n][n] = "o"
+        diagonal << [n, n]
+      end
+      expect(gameboard.diagonal_match?(diagonal, "o")).to eql(true)
     end
   end
 end

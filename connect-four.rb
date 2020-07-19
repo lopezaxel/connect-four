@@ -35,9 +35,9 @@ class Gameboard
     graphic
   end
 
-  def check_win(row, column)
+  def check_win?(row, column)
     check_horizontal(row, column) || check_vertical(row, column) ||
-    check_diagonal(row, column)
+    check_left_diagonal(row, column) || check_right_diagonal(row, column)
   end
   
   def check_horizontal(row, col)
@@ -52,7 +52,7 @@ class Gameboard
       squares = board[row][col - left..col + right]   
       right += 1
 
-      return true if straight_match(squares, mark) && squares.size >= 3
+      return true if straight_match?(squares, mark) && squares.size >= 3
     end
 
     false
@@ -68,59 +68,60 @@ class Gameboard
       column << board[row][col_num]
     end
     
-    return straight_match(column, mark)
+    return straight_match?(column, mark)
   end
 
-  def get_diagonal(row, col)
+  def get_diagonal(row, col, direction)
     diagonal = []
 
     row.upto(row + 3) do |r|
-      unless diagonal.size == 4 || r < 0 || r > 5 || col < 0 || col > 6 
-        diagonal << [r, col] 
-      end
+      break if r < 0 || r >= board.length || col < 0 || col >= board[0].length 
 
-      col += 1 
-    end
-
-    diagonal
-  end
-
-  def get_right_diagonal(row, col)
-    diagonal = []
-
-    row.upto(row + 3) do |r| 
-      break if r < 0 || r >= board.length || col < 0 || col >= board.length
       diagonal << [r, col] 
-      col -= 1
+
+      if direction == "right"
+        col += 1 
+      elsif direction == "left"
+        col -= 1
+      end
     end
 
     diagonal
   end
 
-  def check_diagonal(row, col)
-    c = col - 3
+  def check_left_diagonal(row, col)
+    c = col + 3
     mark = board[row][col]
 
-    return false if mark.nil?
-
     (row - 3).upto(row + 3) do |r|
-      left_diagonal = get_diagonal(r, c)
+      diagonal = get_diagonal(r, c, "left")
+      c -= 1
 
-      if left_diagonal.size == 4
-        return true if diagonal_match(left_diagonal, mark)
-      end
-
-      c += 1
+      return true if diagonal_match?(diagonal, mark) && diagonal.size == 4
     end
 
     false
   end
 
-  def diagonal_match(line, mark)
+  def check_right_diagonal(row, col)
+    c = col - 3
+    mark = board[row][col]
+
+    (row - 3).upto(row + 3) do |r|
+      diagonal = get_diagonal(r, c, "right")
+      c += 1
+
+      return true if diagonal_match?(diagonal, mark) && diagonal.size == 4
+    end
+
+    false
+  end
+
+  def diagonal_match?(line, mark)
     line.all? { |row, col| board[row][col] == mark }
   end
 
-  def straight_match(line, mark)
+  def straight_match?(line, mark)
     line.all? { |square| square == mark }
   end
 end
