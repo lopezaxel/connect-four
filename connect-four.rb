@@ -1,3 +1,5 @@
+require 'pry'
+
 class Game
   attr_accessor :board
   attr_reader :player1, :player2
@@ -140,8 +142,16 @@ class Gameboard
     line.all? { |square| square == mark }
   end
 
-  def inside_board?(row, column)
-    row > 0 && row < board.first.size && column > 0 && column < board.size 
+  def is_inside_board?(row, column)
+    row >= 0 && row < board.first.size && column >= 0 && column < board.size 
+  end
+
+  def empty_square?(row, column)
+    board[row][column] == " "
+  end
+
+  def move_is_valid?(row, column)
+    row.is_a?(Integer) && column.is_a?(Integer) && is_inside_board?(row, column) && empty_square?(row, column)
   end
 end
 

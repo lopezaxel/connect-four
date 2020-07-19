@@ -183,7 +183,7 @@ describe "Gameboard" do
     end
   end
 
-  describe "diagonal_match?" do
+  describe "#diagonal_match?" do
     it "returns true if diagonal matches to desired mark" do
       gameboard = Gameboard.new
       diagonal = []
@@ -195,7 +195,7 @@ describe "Gameboard" do
     end
   end
 
-  describe "straight_match?" do
+  describe "#straight_match?" do
     it "returns true if row matches to desired mark" do
       gameboard = Gameboard.new
       row = []
@@ -207,15 +207,45 @@ describe "Gameboard" do
     end
   end
 
-  describe "inside_board?" do
+  describe "#is_inside_board?" do
     gameboard = Gameboard.new
 
     it "returns true with [2, 2]" do
-      expect(gameboard.inside_board?(2, 2)).to eql(true)
+      expect(gameboard.is_inside_board?(2, 2)).to eql(true)
     end
 
     it "returns false with [7, -5]" do
-      expect(gameboard.inside_board?(7, -5)).to eql(false)
+      expect(gameboard.is_inside_board?(7, -5)).to eql(false)
+    end
+  end
+
+  describe "#empty_square?" do
+    gameboard = Gameboard.new
+
+    it "returns true with empty square" do
+      expect(gameboard.empty_square?(0, 0)).to eql(true)
+    end
+
+    it "returns false with occupied square" do
+      gameboard.write_move(0, "o")
+      expect(gameboard.empty_square?(0, 0)).to eql(false)
+    end
+  end
+
+  describe "#move_is_valid?" do
+    gameboard = Gameboard.new
+
+    it "returns true with valid moves" do
+      expect(gameboard.move_is_valid?(0, 0)).to eql(true)
+      expect(gameboard.move_is_valid?(5, 3)).to eql(true)
+    end
+
+    it "returns false with invalid moves" do
+      gameboard.write_move(0, "o")
+
+      expect(gameboard.move_is_valid?(0, 0)).to eql(false)
+      expect(gameboard.move_is_valid?(7, 9)).to eql(false)
+      expect(gameboard.move_is_valid?("n", "u")).to eql(false)
     end
   end
 end
