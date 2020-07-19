@@ -61,11 +61,12 @@ class Gameboard
   def check_vertical(row_num, col_num)
     mark = board[row_num][col_num]
 
-    return false if (row_num - 3) < 0 || mark.nil?
+    return false if (row_num - 3) < 0 
 
     column = []
     row_num.downto(row_num - 3) do |row|
-      column << board[row][col_num]
+      square = board[row][col_num]
+      column << square
     end
     
     return straight_match?(column, mark)

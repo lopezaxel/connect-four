@@ -194,6 +194,18 @@ describe "Gameboard" do
       expect(gameboard.diagonal_match?(diagonal, "o")).to eql(true)
     end
   end
+
+  describe "straight_match?" do
+    it "returns true if row matches to desired mark" do
+      gameboard = Gameboard.new
+      row = []
+      3.times do |n| 
+        gameboard.board[0][n] = "o"
+        row << gameboard.board[0][n] 
+      end
+      expect(gameboard.straight_match?(row, "o")).to eql(true)
+    end
+  end
 end
 
 describe "Player" do
