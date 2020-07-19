@@ -227,3 +227,17 @@ describe "Player" do
   end
 end
 
+describe "Game" do
+  gameboard = Gameboard.new
+  player_1 = Player.new("o")
+  player_2 = Player.new("x")
+  game = Game.new(gameboard, player_1, player_2)
+
+  describe "#congratulation_msg" do
+    it "return a string congratulating the player" do
+      msg = game.congratulation_msg(player_1)
+      expect(msg).to eql("Congratulations player 'o', you have won!")
+    end
+  end
+end
+

@@ -2,10 +2,15 @@ class Game
   attr_accessor :board
   attr_reader :player1, :player2
 
-  def initialize(board, player1, player2)
-    @board = board
+  def initialize(gameboard, player1, player2)
+    @gameboard = gameboard
     @player1 = player1
     @player2 = player2
+    @game_over = false
+  end
+
+  def congratulation_msg(player)
+    "Congratulations player '#{player.mark}', you have won!"
   end
 end
 
