@@ -1,4 +1,4 @@
-require './connect-four'
+require './lib/connect-four.rb'
 
 describe "Gameboard" do
   describe "#create_board" do

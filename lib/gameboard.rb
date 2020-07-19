@@ -1,21 +1,3 @@
-require 'pry'
-
-class Game
-  attr_accessor :board
-  attr_reader :player1, :player2
-
-  def initialize(gameboard, player1, player2)
-    @gameboard = gameboard
-    @player1 = player1
-    @player2 = player2
-    @game_over = false
-  end
-
-  def congratulation_msg(player)
-    "Congratulations player '#{player.mark}', you have won!"
-  end
-end
-
 class Gameboard
   attr_accessor :board
 
@@ -154,27 +136,4 @@ class Gameboard
     row.is_a?(Integer) && column.is_a?(Integer) && is_inside_board?(row, column) && empty_square?(row, column)
   end
 end
-
-class Player
-  attr_reader :mark
-
-  def initialize(mark)
-    @mark = mark
-  end
-
-  def prompt_column
-    "Enter a column: "
-  end
-
-  def input
-    gets.chomp
-  end
-
-  def is_integer?(value)
-    value.is_a?(Integer)
-  end
-end
-
-gameboard = Gameboard.new
-player = Player.new("o")
 
