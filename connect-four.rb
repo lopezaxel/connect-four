@@ -1,4 +1,13 @@
-require 'pry'
+class Game
+  attr_accessor :board
+  attr_reader :player1, :player2
+
+  def initialize(board, player1, player2)
+    @board = board
+    @player1 = player1
+    @player2 = player2
+  end
+end
 
 class Gameboard
   attr_accessor :board
