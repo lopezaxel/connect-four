@@ -206,6 +206,18 @@ describe "Gameboard" do
       expect(gameboard.straight_match?(row, "o")).to eql(true)
     end
   end
+
+  describe "inside_board?" do
+    gameboard = Gameboard.new
+
+    it "returns true with [2, 2]" do
+      expect(gameboard.inside_board?(2, 2)).to eql(true)
+    end
+
+    it "returns false with [7, -5]" do
+      expect(gameboard.inside_board?(7, -5)).to eql(false)
+    end
+  end
 end
 
 describe "Player" do
@@ -223,6 +235,16 @@ describe "Player" do
       col = $stdin.gets
 
       expect(col).to eq("yes")
+    end
+  end
+
+  describe "#is_integer?" do
+    it "return true with a number" do
+      expect(player.is_integer?(5)).to eql(true)
+    end
+
+    it "return false with a string" do
+      expect(player.is_integer?("ddd")).to eql(false)
     end
   end
 end

@@ -139,6 +139,10 @@ class Gameboard
   def straight_match?(line, mark)
     line.all? { |square| square == mark }
   end
+
+  def inside_board?(row, column)
+    row > 0 && row < board.first.size && column > 0 && column < board.size 
+  end
 end
 
 class Player
@@ -154,6 +158,10 @@ class Player
 
   def input
     gets.chomp
+  end
+
+  def is_integer?(value)
+    value.is_a?(Integer)
   end
 end
 
