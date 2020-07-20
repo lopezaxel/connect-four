@@ -1,4 +1,4 @@
-require './lib/connect-four.rb'
+require './lib/connect_four.rb'
 
 describe "Gameboard" do
   describe "#create_board" do
@@ -245,7 +245,6 @@ describe "Gameboard" do
 
       expect(gameboard.move_is_valid?(0, 0)).to eql(false)
       expect(gameboard.move_is_valid?(7, 9)).to eql(false)
-      expect(gameboard.move_is_valid?("n", "u")).to eql(false)
     end
   end
 end
@@ -253,28 +252,12 @@ end
 describe "Player" do
   player = Player.new("o")
 
-  describe "#prompt_column" do
-    it "return a string" do
-      expect(player.prompt_column.class).to eql(String)
-    end
-  end
-
   describe "#input" do
     it "return a string" do
       allow($stdin).to receive(:gets).and_return("yes")
       col = $stdin.gets
 
       expect(col).to eq("yes")
-    end
-  end
-
-  describe "#is_integer?" do
-    it "return true with a number" do
-      expect(player.is_integer?(5)).to eql(true)
-    end
-
-    it "return false with a string" do
-      expect(player.is_integer?("ddd")).to eql(false)
     end
   end
 end
@@ -285,11 +268,56 @@ describe "Game" do
   player_2 = Player.new("x")
   game = Game.new(gameboard, player_1, player_2)
 
+  describe "#prompt_column" do
+    it "return a string" do
+      expect(game.prompt_column.class).to eql(String)
+    end
+  end
+
   describe "#congratulation_msg" do
     it "return a string congratulating the player" do
       msg = game.congratulation_msg(player_1)
       expect(msg).to eql("Congratulations player 'o', you have won!")
     end
   end
+
+  describe "#wrong_col_msg" do
+    it "return a string saying that the column is wrong" do
+      msg = game.wrong_col_msg
+      expect(msg).to eql("Wrong column, please try again.")
+    end
+  end
+
+  describe "#get_player_move" do
+    it "player gets it's input method called" do
+      player = double("player")
+      expect(player).to receive(:integer_input).and_return(4)
+
+      game = Game.new(Gameboard.new, player, Player.new("x"))
+      game.get_player_move(player)
+    end
+
+    it "return 5 when 5 entered in input" do
+      player = double("player")
+
+      allow(player).to receive(:integer_input).and_return(5)
+
+      game = Game.new(Gameboard.new, player, Player.new("x"))
+      expect(game.get_player_move(player)).to eql(5)
+    end
+  end
 end
 
+describe "Extras" do
+  include Extras
+
+  describe "#is_integer?" do
+    it "return true with a number" do
+      expect(is_integer?(5)).to eql(true)
+    end
+
+    it "return false with a string" do
+      expect(is_integer?("ddd")).to eql(false)
+    end
+  end
+end

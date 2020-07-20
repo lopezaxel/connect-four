@@ -1,4 +1,12 @@
+module Extras
+  def is_integer?(value)
+    value.is_a?(Integer)
+  end
+end
+
 class Gameboard
+  include Extras
+
   attr_accessor :board
 
   def initialize
@@ -10,6 +18,8 @@ class Gameboard
   end
 
   def find_available_row(column)
+    return if column.nil?
+
     board.each_index do |row|
       return row if board[row][column] == " "
     end
@@ -125,7 +135,8 @@ class Gameboard
   end
 
   def is_inside_board?(row, column)
-    row >= 0 && row < board.first.size && column >= 0 && column < board.size 
+    return if row.nil? || column.nil?
+    row >= 0 && row < board.size && column >= 0 && column < board.first.size 
   end
 
   def empty_square?(row, column)
@@ -133,7 +144,7 @@ class Gameboard
   end
 
   def move_is_valid?(row, column)
-    row.is_a?(Integer) && column.is_a?(Integer) && is_inside_board?(row, column) && empty_square?(row, column)
+    is_inside_board?(row, column) && empty_square?(row, column)
   end
 end
 

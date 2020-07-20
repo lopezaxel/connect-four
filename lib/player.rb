@@ -5,16 +5,17 @@ class Player
     @mark = mark
   end
 
-  def prompt_column
-    "Enter a column: "
-  end
-
   def input
     gets.chomp
   end
 
-  def is_integer?(value)
-    value.is_a?(Integer)
+  def integer_input
+    begin
+      Integer(input)
+    rescue
+      puts "Enter a number: "
+      retry
+    end
   end
 end
 
