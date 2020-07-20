@@ -2,7 +2,7 @@ require './lib/gameboard.rb'
 require './lib/player.rb'
 
 class Game
-  attr_accessor :gameboard
+  attr_accessor :gameboard, :game_over
   attr_reader :player1, :player2
 
   def initialize(gameboard, player1, player2)
@@ -10,6 +10,20 @@ class Game
     @player1 = player1
     @player2 = player2
     @game_over = false
+  end
+
+  def player_turn(player)
+    column = get_player_move(player)
+    row = gameboard.find_available_row(column)
+
+    gameboard.write_move(column, player.mark)
+    puts gameboard.display_board
+
+    if gameboard.check_win?(row, column)
+      set_game_over_true 
+    else
+      false
+    end
   end
 
   def get_player_move(player)
@@ -21,6 +35,10 @@ class Game
       return column if gameboard.move_is_valid?(row, column)
       puts wrong_col_msg
     end
+  end
+
+  def set_game_over_true
+    self.game_over = true
   end
 
   def congratulation_msg(player)
@@ -38,6 +56,6 @@ end
 
 gameboard = Gameboard.new
 player_1 = Player.new("o")
-player_2 = Player.new("o")
+player_2 = Player.new("x")
 game = Game.new(gameboard, player_1, player_2)
 

@@ -306,6 +306,61 @@ describe "Game" do
       expect(game.get_player_move(player)).to eql(5)
     end
   end
+
+  describe "#set_game_over_true" do
+    it "sets @game_over to true" do
+      game.set_game_over_true
+      expect(game.game_over).to eql(true)
+    end
+  end
+
+  describe "#player_turn" do
+    it "calls gameboard's #display_board method" do
+      gameboard = double("gameboard")
+      player1 = double("player1")
+      game = Game.new(gameboard, player1, double("player2"))
+
+      #expect(gameboard).to receive(:find_available_row)
+
+      #game.player_turn(player1)
+    end
+
+    it "calls #get_player_move" do
+      player1 = double("player1")
+      gameboard = Gameboard.new
+      game = Game.new(gameboard, player1, double("player2"))
+
+      #allow(game).to receive(:get_player_move).and_return(5)
+      #game.player_turn(player1)
+    end
+
+    it "calls #write_move" do
+      gameboard = double("gameboard")
+      player1 = double("player1")
+      game = Game.new(gameboard, player1, double("player2"))
+      
+      #expect(gameboard).to receive(:write_move)
+      #game.player_turn(player1)
+    end
+
+    it "return false if not winning move" do
+      player1 = Player.new("o")
+      game = Game.new(Gameboard.new, player1, double("player2"))
+
+      allow(game).to receive(:get_player_move).and_return(3)
+      expect(game.player_turn(player1)).to eql(false)
+    end
+
+    it "return true if winning move" do
+      player1 = Player.new("o")
+      gameboard = Gameboard.new
+      3.times {|n| gameboard.write_move(n, "o")}
+      game = Game.new(gameboard, player1, double("player2"))
+
+      allow(game).to receive(:get_player_move).and_return(3)
+      expect(game.player_turn(player1)).to eql(true)
+    end
+  end
 end
 
 describe "Extras" do
