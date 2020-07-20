@@ -12,6 +12,14 @@ class Game
     @game_over = false
   end
 
+  def start_game
+#    until game_over
+    player_turn(player1)
+#    break if game_over
+    player_turn(player2)
+#    end
+  end
+
   def player_turn(player)
     column = get_player_move(player)
     row = gameboard.find_available_row(column)
@@ -58,4 +66,5 @@ gameboard = Gameboard.new
 player_1 = Player.new("o")
 player_2 = Player.new("x")
 game = Game.new(gameboard, player_1, player_2)
+#game.start_game
 

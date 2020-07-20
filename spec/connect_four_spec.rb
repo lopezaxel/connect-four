@@ -354,11 +354,24 @@ describe "Game" do
     it "return true if winning move" do
       player1 = Player.new("o")
       gameboard = Gameboard.new
-      3.times {|n| gameboard.write_move(n, "o")}
       game = Game.new(gameboard, player1, double("player2"))
+
+      3.times {|n| gameboard.write_move(n, "o")}
 
       allow(game).to receive(:get_player_move).and_return(3)
       expect(game.player_turn(player1)).to eql(true)
+    end
+  end
+
+  describe "#start_game" do
+    it "should call #player_turn two times" do
+      player1 = double("player1")
+      player2 = double("player2")
+      game = Game.new(double("gameboard"), player1, player2)
+
+      expect(game).to receive(:player_turn).at_least(2).times
+
+      game.start_game
     end
   end
 end
