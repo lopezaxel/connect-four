@@ -60,7 +60,7 @@ class Gameboard
       squares = board[row][col - left..col + right]   
       right += 1
 
-      return true if straight_match?(squares, mark) && squares.size >= 3
+      return true if straight_match?(squares, mark) && squares.size > 3
     end
 
     false

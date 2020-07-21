@@ -13,11 +13,12 @@ class Game
   end
 
   def start_game
-#    until game_over
-    player_turn(player1)
-#    break if game_over
-    player_turn(player2)
-#    end
+    puts introduction_msg
+    until game_over
+      player_turn(player1)
+      break if game_over
+      player_turn(player2)
+    end
   end
 
   def player_turn(player)
@@ -28,15 +29,14 @@ class Game
     puts gameboard.display_board
 
     if gameboard.check_win?(row, column)
+      puts congratulation_msg(player)
       set_game_over_true 
-    else
-      false
     end
   end
 
   def get_player_move(player)
     loop do
-      puts prompt_column
+      print prompt_column
       column = player.integer_input
       row = gameboard.find_available_row(column)
 
@@ -50,21 +50,25 @@ class Game
   end
 
   def congratulation_msg(player)
-    "Congratulations player '#{player.mark}', you have won!"
+    "\nCongratulations player '#{player.mark}', you have won!"
   end
 
   def prompt_column
-    "Enter a column: "
+    "\nEnter a column: "
   end
 
   def wrong_col_msg
     "Wrong column, please try again."
   end
+
+  def introduction_msg
+    "Enter a column between 0 and 6"
+  end
 end
 
 gameboard = Gameboard.new
-player_1 = Player.new("o")
-player_2 = Player.new("x")
+player_1 = Player.new("\u263A".encode("utf-8"))
+player_2 = Player.new("\u263B".encode("utf-8"))
 game = Game.new(gameboard, player_1, player_2)
-#game.start_game
+game.start_game
 

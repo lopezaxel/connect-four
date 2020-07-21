@@ -315,40 +315,12 @@ describe "Game" do
   end
 
   describe "#player_turn" do
-    it "calls gameboard's #display_board method" do
-      gameboard = double("gameboard")
-      player1 = double("player1")
-      game = Game.new(gameboard, player1, double("player2"))
-
-      #expect(gameboard).to receive(:find_available_row)
-
-      #game.player_turn(player1)
-    end
-
-    it "calls #get_player_move" do
-      player1 = double("player1")
-      gameboard = Gameboard.new
-      game = Game.new(gameboard, player1, double("player2"))
-
-      #allow(game).to receive(:get_player_move).and_return(5)
-      #game.player_turn(player1)
-    end
-
-    it "calls #write_move" do
-      gameboard = double("gameboard")
-      player1 = double("player1")
-      game = Game.new(gameboard, player1, double("player2"))
-      
-      #expect(gameboard).to receive(:write_move)
-      #game.player_turn(player1)
-    end
-
-    it "return false if not winning move" do
+    it "return nil if not winning move" do
       player1 = Player.new("o")
       game = Game.new(Gameboard.new, player1, double("player2"))
 
       allow(game).to receive(:get_player_move).and_return(3)
-      expect(game.player_turn(player1)).to eql(false)
+      expect(game.player_turn(player1)).to eql(nil)
     end
 
     it "return true if winning move" do
@@ -363,15 +335,11 @@ describe "Game" do
     end
   end
 
-  describe "#start_game" do
-    it "should call #player_turn two times" do
-      player1 = double("player1")
-      player2 = double("player2")
-      game = Game.new(double("gameboard"), player1, player2)
-
-      expect(game).to receive(:player_turn).at_least(2).times
-
-      game.start_game
+  describe "introduction_msg" do
+    it "return a string telling the rules of the game" do
+      msg = game.introduction_msg
+      expect(msg.class).to eql(String)
+      expect(msg).to eql("Enter a column between 0 and 6")
     end
   end
 end
